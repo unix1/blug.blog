@@ -5,9 +5,9 @@ date: 2026-09-06
 
 [blug](https://github.com/unix1/blug) is a small and simple static blog generator. To create a new post, create a folder under `public/` and write your content in `index.md` with markdown.
 
-To preview content before publishing run `npm generate` first, then `npm run dev` to serve your blog on your local computer.
+To preview content before publishing run `npm run generate` first, then `npm run dev` to serve your blog on your local computer.
 
-To publish changes, just run `npm deploy`.
+To publish changes, just run `npm run deploy`.
 
 blug supports any S3 compatible storage and has been tested on Cloudflare R2.
 
