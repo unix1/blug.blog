@@ -28,7 +28,7 @@
 </code></pre>
 <p>That forces rclone to re-upload all objects so it can set the new Cache-Control attributes.</p>
 <h4>Publish</h4>
-<p><code>npm run deploy</code> generates the site and uploads <code>public/</code>. rclone sends <code>Cache-Control</code> as <code>--header-upload</code>, and R2 stores it as object metadata.</p>
+<p><code>npm run deploy</code> generates the site and uploads <code>public/</code>. rclone passes <code>--header-upload Cache-Control: ...</code>, and R2 stores it as object metadata.</p>
 <h4>Cache HTML at the edge</h4>
 <p><code>Cache-Control</code> on the object is not enough for HTML. Cloudflare does not cache HTML by default. Add a Cache Rule with <strong>Eligible for cache</strong> (the Cache everything template works) so those responses are not <code>DYNAMIC</code>.</p>
 <p>Setup steps for the cache rule are in <a href="https://github.com/unix1/blug/blob/main/SETUP.md">SETUP.md</a> on the blug project.</p>

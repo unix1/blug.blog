@@ -29,7 +29,7 @@ That forces rclone to re-upload all objects so it can set the new Cache-Control 
 
 #### Publish
 
-`npm run deploy` generates the site and uploads `public/`. rclone sends `Cache-Control` as `--header-upload`, and R2 stores it as object metadata.
+`npm run deploy` generates the site and uploads `public/`. rclone passes `--header-upload Cache-Control: ...`, and R2 stores it as object metadata.
 
 #### Cache HTML at the edge
 
