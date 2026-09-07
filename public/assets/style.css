@@ -86,6 +86,18 @@ article time {
   letter-spacing: 0.04em;
 }
 
+.listing-intro {
+  margin-bottom: 2.25rem;
+}
+
+.listing-intro > :first-child {
+  margin-top: 0;
+}
+
+.listing-intro > :last-child {
+  margin-bottom: 0;
+}
+
 .post-list {
   list-style: none;
   padding: 0;
