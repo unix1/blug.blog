@@ -56,3 +56,7 @@ R2 serves exact object keys. It does not map `/hello-world/` to `hello-world/ind
 That also covers `/` → `/index.html`.
 
 Post links on the listing include a trailing slash (`hello-world/`) so the browser treats the page as a directory and relative media links resolve. The rewrite is internal: the address bar stays `/hello-world/`.
+
+## License
+
+[MIT](LICENSE)
