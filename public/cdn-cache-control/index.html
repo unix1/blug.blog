@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CDN cache control</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <a class="site-title" href="/">blug</a>
+  </header>
+  <main>
+<article>
+<h1>CDN cache control</h1>
+<time datetime="2026-09-07">2026-09-07</time>
+<p><a href="https://github.com/unix1/blug">blug</a> now allows you to set how long the objects will be cached on the CDN edge. It does so by setting the <code>Cache-Control</code> header on those objects when you deploy your site. Cloudflare uses that header to control the CDN caching behavior.</p>
+<p>Without this header, R2 objects have no cache metadata, HTML would stay as a <code>DYNAMIC</code> resource and every request would go through to the R2 bucket.</p>
+<h4>Set it in <code>.env</code></h4>
+<p>Here&#39;s an example in your <code>.env</code> configuration that caches objects for one hour:</p>
+<pre><code>CACHE_CONTROL=&quot;public, max-age=3600&quot;
+</code></pre>
+<p>Remember to quote the value. To use the previous behavior (no caching), leave this value empty.</p>
+<h4>Re-upload after you change it</h4>
+<p>If you just set the above configuration, the setting will only apply to newly copied objects in R2. To change the setting on all objects, they must be re-uploaded. For this purpose, you can tell <code>blug</code> to force objects to be re-uploaded in <code>.env</code>:</p>
+<pre><code>CACHE_CONTROL_REUPLOAD=1
+</code></pre>
+<p>Set it before running <code>npm run deploy</code>. Don&#39;t forget to unset it (or change it to <code>0</code>) when done, so you don&#39;t unintentionally re-upload all objects with subsequent runs.</p>
+<h4>Publish</h4>
+<p>To make the change effective (either for newly copied objects or all) you must run</p>
+<pre><code>npm run deploy
+</code></pre>
+<p>In the background this makes <code>rclone</code> send the necessary headers to R2.</p>
+<h4>Cache HTML at the edge</h4>
+<p>One last note: <code>Cache-Control</code> on the object by itself is not enough for Cloudflare CDN to start caching HTML files. Cloudflare does not cache HTML by default. Add a Cache Rule with <strong>Eligible for cache</strong> (the Cache everything template works) so those responses are not treated as <code>DYNAMIC</code>.</p>
+<p>If you (or your agent) previously followed the steps in <a href="https://github.com/unix1/blug/blob/main/SETUP.md">SETUP.md</a> you should be all set.</p>
+<p>Enjoy blazing low latency on your site worldwide and fewer requests to R2!</p>
+
+</article>
+  </main>
+  <footer>
+    <p>A site about blug, generated with blug. · © blug.blog</p>
+  </footer>
+</body>
+</html>
