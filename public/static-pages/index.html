@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Static pages</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <a class="site-title" href="/">blug</a>
+  </header>
+  <main>
+<article>
+<h1>Static pages</h1>
+<time datetime="2026-09-26">2026-09-26</time>
+<p><a href="https://github.com/unix1/blug">blug</a> now supports static pages. Static pages are any page content that you don&#39;t want to appear in the list of posts. Examples are contents such as privacy policy, about, contact or anything you can think of.</p>
+<p>Similar to posts, create a folder under <code>public/</code> with the slug you want, and put your content in <code>index.md</code> with <code>type: page</code> instead of a date. For example, <code>public/privacy-policy/index.md</code> could be:</p>
+<pre><code class="language-markdown">---
+title: Privacy Policy
+type: page
+---
+
+Your content here.
+</code></pre>
+<p>Then run <code>npm run generate</code>. The page will now be available at <code>/privacy-policy/</code>. Link to it from anywhere with <code>[privacy](/privacy-policy/)</code>.</p>
+<p>For more info, see <a href="https://github.com/unix1/blug/blob/main/README.md#write-a-page">Write a page</a> in the blug README.</p>
+
+</article>
+  </main>
+  <footer>
+    <p>A site about blug, generated with blug. · © blug.blog</p>
+  </footer>
+</body>
+</html>
