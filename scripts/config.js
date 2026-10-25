@@ -1,4 +1,7 @@
 export const SITE_HEADER = "blug";
+export const SITE_TITLE = "blug - simple static blog generator";
+export const SITE_SUBTITLE = "blug";
+export const SITE_DESCRIPTION = "blug is a small static blog generator. Set up and run your site on Cloudflare in minutes.";
 export const SITE_FOOTER = "A site about blug, generated with blug. · © blug.blog";
 export const LISTING_HEADING = "news";
 export const LISTING_INTRO = `[blug](https://github.com/unix1/blug) is a small static blog generator. Set up and run your site on Cloudflare in minutes.
