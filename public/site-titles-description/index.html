@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Site titles and description - blug</title>
+  <meta name="description" content="blug is a small static blog generator. Set up and run your site on Cloudflare in minutes.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <a class="site-title" href="/">blug</a>
+  </header>
+  <main>
+<article>
+<h1>Site titles and description</h1>
+<time datetime="2026-10-25">2026-10-25</time>
+<p><a href="https://github.com/unix1/blug">blug</a> now lets you set the listing page title, post and page title suffix, and meta description in <code>scripts/config.js</code>.</p>
+<pre><code class="language-javascript">export const SITE_HEADER = &quot;blug&quot;;
+export const SITE_TITLE = &quot;blug - simple static blog generator&quot;;
+export const SITE_SUBTITLE = &quot;blug&quot;;
+export const SITE_DESCRIPTION = &quot;A small static blog generator.&quot;;
+</code></pre>
+<p>Let&#39;s demystify what they are:</p>
+<ul>
+<li><code>SITE_HEADER</code> is the visible header that shows up at the top of each page</li>
+<li><code>SITE_TITLE</code> is the home page title tag value.</li>
+<li>Posts and pages use <code>&lt;entry title&gt; - SITE_SUBTITLE</code> as their title tag value.</li>
+<li><code>SITE_DESCRIPTION</code> fills the meta description tag.</li>
+</ul>
+<p>For more info, see the <a href="https://github.com/unix1/blug/blob/main/README.md">blug README</a>.</p>
+
+</article>
+  </main>
+  <footer>
+    <p>A site about blug, generated with blug. · © blug.blog</p>
+  </footer>
+</body>
+</html>
