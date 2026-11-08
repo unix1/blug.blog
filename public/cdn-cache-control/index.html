@@ -16,10 +16,11 @@
 <article>
 <h1>CDN cache control</h1>
 <time datetime="2026-09-07">2026-09-07</time>
+
 <p><a href="https://github.com/unix1/blug">blug</a> now allows you to set how long the objects will be cached on the CDN edge. It does so by setting the <code>Cache-Control</code> header on those objects when you deploy your site. Cloudflare uses that header to control the CDN caching behavior.</p>
 <p>Without this header, R2 objects have no cache metadata, HTML would stay as a <code>DYNAMIC</code> resource and every request would go through to the R2 bucket.</p>
 <h4>Set it in <code>.env</code></h4>
-<p>Here&#39;s an example in your <code>.env</code> configuration that caches objects for one hour:</p>
+<p>Here's an example in your <code>.env</code> configuration that caches objects for one hour:</p>
 <pre><code>CACHE_CONTROL=&quot;public, max-age=3600&quot;
 </code></pre>
 <p>Remember to quote the value. To use the previous behavior (no caching), leave this value empty.</p>
@@ -27,7 +28,7 @@
 <p>If you just set the above configuration, the setting will only apply to newly copied objects in R2. To change the setting on all objects, they must be re-uploaded. For this purpose, you can tell <code>blug</code> to force objects to be re-uploaded in <code>.env</code>:</p>
 <pre><code>CACHE_CONTROL_REUPLOAD=1
 </code></pre>
-<p>Set it before running <code>npm run deploy</code>. Don&#39;t forget to unset it (or change it to <code>0</code>) when done, so you don&#39;t unintentionally re-upload all objects with subsequent runs.</p>
+<p>Set it before running <code>npm run deploy</code>. Don't forget to unset it (or change it to <code>0</code>) when done, so you don't unintentionally re-upload all objects with subsequent runs.</p>
 <h4>Publish</h4>
 <p>To make the change effective (either for newly copied objects or all) you must run</p>
 <pre><code>npm run deploy

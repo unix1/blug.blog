@@ -1,26 +1,27 @@
 # Agent notes
 
-Keep this blog generator small. Do not add templating languages, `<base>` tags, custom HTTP servers, or recursive post discovery unless asked.
+This repo is the blug.blog site. Generate, preview, and deploy with the Go [blug](https://github.com/unix1/blug) CLI. Do not add a Node generator, templating languages besides the existing `html/template` files, `<base>` tags, a custom HTTP server, or recursive post discovery unless asked.
 
 ## Layout
 
 - `public/` is the site root and the rclone/R2 upload tree.
 - Posts and pages are one level deep: `public/<slug>/index.md` plus any media. Skip `public/assets/`.
 - Pages use frontmatter `type: page` (no `date`). They share the same slug/URL layout as posts but are excluded from the home listing and render without a `<time>`.
-- `scripts/config.js` holds `SITE_HEADER`, `SITE_TITLE`, `SITE_SUBTITLE`, `SITE_DESCRIPTION`, `SITE_FOOTER`, `LISTING_HEADING`, and `LISTING_INTRO`.
-- `templates/header.html` and `templates/footer.html` wrap every page. Placeholders are `{{title}}`, `{{description}}`, `{{site_header}}`, and `{{site_footer}}`.
-- `templates/listing.html` is the home page body. Placeholders are `{{listing_intro}}`, `{{listing_heading}}`, and `{{posts}}`. `LISTING_INTRO` is markdown; empty string omits the intro.
-- `scripts/generate.js` is the only build step. It reads `scripts/config.js`.
-- `.env` holds S3 provider, region, endpoint, access keys, bucket, and optional `CACHE_CONTROL`. Generate does not read it. Deploy does (`scripts/deploy.sh`).
+- `blug.yaml` holds `site_header`, `site_title`, `site_subtitle`, `site_description`, `site_footer`, and `listing_heading`.
+- `public/index.md` is the home intro (markdown above the post list). It is required. An empty file omits the intro.
+- `templates/header.html` and `templates/footer.html` wrap every page. Fields are `{{.Title}}`, `{{.Description}}`, `{{.SiteHeader}}`, and `{{.SiteFooter}}`.
+- `templates/listing.html` is the home page body. Fields are `{{.Body}}`, `{{.ListingHeading}}`, and `{{range .Posts}}` with `{{.Date}}`, `{{.Slug}}`, and `{{.Title}}`.
+- `templates/article.html` is the post/page body. Fields are `{{.EntryTitle}}`, `{{.Date}}`, and `{{.Body}}`. Empty `{{.Date}}` omits `<time>` on pages.
+- `.env` holds S3 provider, region, endpoint, access keys, bucket, and optional `CACHE_CONTROL`. Generate does not read it. Deploy does.
 
 ## Generate
 
-`npm run generate` (`node scripts/generate.js`):
+`blug generate` (run in this directory):
 
 1. Scan `public/*/` for `index.md`.
 2. If `type: page`, require YAML frontmatter `title` only. Otherwise require `title` and `date`.
-3. Convert markdown with `marked` and write `public/<slug>/index.html`. Posts include a `<time>`; pages do not. Document titles are `<entry title> - SITE_SUBTITLE`. Skip the write when the file is already up to date.
-4. Write `public/index.html` from posts only (newest date first), using `SITE_TITLE` as the document title, including `LISTING_INTRO` above the post list when set.
+3. Convert markdown and write `public/<slug>/index.html`. Posts include a `<time>`; pages do not. Document titles are `<entry title> - site_subtitle`. Skip the write when the file is already up to date.
+4. Write `public/index.html` from `public/index.md` plus posts only (newest date first), using `site_title` as the document title.
 
 Leave media files untouched. Markdown relative links (`./photo.jpg`) must stay relative in the HTML.
 
@@ -36,8 +37,10 @@ R2 does not serve `index.html` for directory paths. Production needs a Cloudflar
 
 Without the trailing slash in the browser URL, `./photo.jpg` resolves to `/photo.jpg`. Do not "fix" that with `<base href>`.
 
-`npm run deploy` runs generate, then rclone sync of `public/` using R2 credentials from `.env` (flags, not `rclone.conf`). If `CACHE_CONTROL` is set, rclone passes `--header-upload Cache-Control: ...` so R2 stores it as object metadata. Set `CACHE_CONTROL_REUPLOAD=1` once after changing it so unchanged objects are rewritten. HTML and extensionless URLs also need a Cloudflare Cache Rule with Eligible for cache; otherwise they stay `DYNAMIC` and every request hits R2. Do not wrap rclone in Node.
+`blug deploy` runs generate, then rclone sync of `public/` using R2 credentials from `.env` (flags, not `rclone.conf`). The rclone script is embedded in the `blug` binary. If `CACHE_CONTROL` is set, rclone passes `--header-upload Cache-Control: ...` so R2 stores it as object metadata. Set `CACHE_CONTROL_REUPLOAD=1` once after changing it so unchanged objects are rewritten. HTML and extensionless URLs also need a Cloudflare Cache Rule with Eligible for cache; otherwise they stay `DYNAMIC` and every request hits R2.
+
+Setup steps: [SETUP.md](https://github.com/unix1/blug/blob/main/SETUP.md).
 
 ## Preview
 
-`npm run dev` is `serve public`. Do not replace it with a hand-rolled server.
+`blug serve` serves `public/`. It binds `:3000` first; if that port is taken it tries another port. It always prints the URL.

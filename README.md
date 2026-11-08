@@ -1,15 +1,17 @@
-# blug
+# blug.blog
 
-A static blog generator. Posts are markdown folders under `public/`. `scripts/generate.js` turns them into HTML.
+The site at [blug.blog](https://blug.blog), generated with [blug](https://github.com/unix1/blug).
+
+Posts and pages are markdown folders under `public/`. `blug generate` turns them into HTML.
 
 ## Layout
 
 ```
+blug.yaml            # header, titles, description, footer, listing heading
 .env                 # S3 credentials for rclone (not committed)
-templates/           # header.html, footer.html, listing.html
-scripts/generate.js
-scripts/config.js    # header, listing title, subtitle, description, footer, listing heading, optional home intro
+templates/           # header.html, footer.html, listing.html, article.html
 public/
+  index.md           # home page intro
   index.html         # generated listing
   assets/style.css
   hello-world/
@@ -50,20 +52,21 @@ Your content here.
 
 `title` and `type: page` are required. Link to pages the same way as posts (`/privacy-policy/`).
 
-Edit `scripts/config.js` for the site header, listing page title (`SITE_TITLE`), post/page title suffix (`SITE_SUBTITLE`), meta description (`SITE_DESCRIPTION`), footer, listing heading, and optional home-page intro (`LISTING_INTRO`, markdown shown above the post list). Posts and pages use `<title> - SITE_SUBTITLE` as the document title. Leave `LISTING_INTRO` empty to omit it.
+Edit `blug.yaml` for the site header, listing page title (`site_title`), post/page title suffix (`site_subtitle`), meta description (`site_description`), footer, and listing heading. The home intro is `public/index.md` (markdown shown above the post list). Posts and pages use `<title> - site_subtitle` as the document title. Leave `public/index.md` empty to omit the intro.
 
 ## Commands
 
+Install `blug` from [GitHub Releases](https://github.com/unix1/blug/releases) or with `go install github.com/unix1/blug@latest`. See the [blug README](https://github.com/unix1/blug/blob/main/README.md) and [SETUP.md](https://github.com/unix1/blug/blob/main/SETUP.md).
+
 ```bash
-npm install
-npm run generate   # write listing, post, and page HTML
-npm run dev        # serve public/ at http://127.0.0.1:3000
-npm run deploy     # generate, then rclone sync public/ to destination
+blug generate   # write listing, post, and page HTML
+blug serve      # serve public/ (port 3000, or another free port)
+blug deploy     # generate, then rclone sync public/ to destination
 ```
 
 ## Hosting
 
-This supports S3-compatible hosting, such as Cloudflare R2. Put `S3_*` values in `.env` (see `.env.example`). `npm run deploy` passes those to rclone; no `rclone.conf` is needed. Set `CACHE_CONTROL` in `.env` to control Cache-Control on uploaded objects.
+This supports S3-compatible hosting, such as Cloudflare R2. Put `S3_*` values in `.env` (see `.env.example`). `blug deploy` passes those to rclone; no `rclone.conf` is needed. Set `CACHE_CONTROL` in `.env` to control Cache-Control on uploaded objects.
 
 R2 serves exact object keys. It does not map `/hello-world/` to `hello-world/index.html`. Add one **URL Rewrite** on the domain (Rules → Overview → URL Rewrite Rule):
 
