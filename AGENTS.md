@@ -1,43 +1,13 @@
 # Agent notes
 
-Keep this blog generator small. Do not add templating languages, `<base>` tags, custom HTTP servers, or recursive post discovery unless asked.
+This repository is the [blug.blog](https://blug.blog) site, not the blug CLI.
 
-## Layout
+Follow [blug's agent notes](https://github.com/unix1/blug/blob/main/AGENTS.md) for generate, templates, URLs, preview, and deploy.
 
-- `public/` is the site root and the rclone/R2 upload tree.
-- Posts and pages are one level deep: `public/<slug>/index.md` plus any media. Skip `public/assets/`.
-- Pages use frontmatter `type: page` (no `date`). They share the same slug/URL layout as posts but are excluded from the home listing and render without a `<time>`.
-- `scripts/config.js` holds `SITE_HEADER`, `SITE_TITLE`, `SITE_SUBTITLE`, `SITE_DESCRIPTION`, `SITE_FOOTER`, `LISTING_HEADING`, and `LISTING_INTRO`.
-- `templates/header.html` and `templates/footer.html` wrap every page. Placeholders are `{{title}}`, `{{description}}`, `{{site_header}}`, and `{{site_footer}}`.
-- `templates/listing.html` is the home page body. Placeholders are `{{listing_intro}}`, `{{listing_heading}}`, and `{{posts}}`. `LISTING_INTRO` is markdown; empty string omits the intro.
-- `scripts/generate.js` is the only build step. It reads `scripts/config.js`.
-- `.env` holds S3 provider, region, endpoint, access keys, bucket, and optional `CACHE_CONTROL`. Generate does not read it. Deploy does (`scripts/deploy.sh`).
+Site-specific:
 
-## Generate
-
-`npm run generate` (`node scripts/generate.js`):
-
-1. Scan `public/*/` for `index.md`.
-2. If `type: page`, require YAML frontmatter `title` only. Otherwise require `title` and `date`.
-3. Convert markdown with `marked` and write `public/<slug>/index.html`. Posts include a `<time>`; pages do not. Document titles are `<entry title> - SITE_SUBTITLE`. Skip the write when the file is already up to date.
-4. Write `public/index.html` from posts only (newest date first), using `SITE_TITLE` as the document title, including `LISTING_INTRO` above the post list when set.
-
-Leave media files untouched. Markdown relative links (`./photo.jpg`) must stay relative in the HTML.
-
-## URLs
-
-- Listing links use a trailing slash: `hello-world/`, not `hello-world` and not `/hello-world/`.
-- Site chrome uses root-absolute paths (`/`, `/assets/style.css`).
-- Do not introduce a blog-base config. Posts live at the site root until someone moves them on purpose.
-
-## Hosting (R2)
-
-R2 does not serve `index.html` for directory paths. Production needs a Cloudflare **URL Rewrite** on the zone (proxied custom domain, not `r2.dev`): paths ending in `/` rewrite to `concat(http.request.uri.path, "index.html")`. That includes `/`.
-
-Without the trailing slash in the browser URL, `./photo.jpg` resolves to `/photo.jpg`. Do not "fix" that with `<base href>`.
-
-`npm run deploy` runs generate, then rclone sync of `public/` using R2 credentials from `.env` (flags, not `rclone.conf`). If `CACHE_CONTROL` is set, rclone passes `--header-upload Cache-Control: ...` so R2 stores it as object metadata. Set `CACHE_CONTROL_REUPLOAD=1` once after changing it so unchanged objects are rewritten. HTML and extensionless URLs also need a Cloudflare Cache Rule with Eligible for cache; otherwise they stay `DYNAMIC` and every request hits R2. Do not wrap rclone in Node.
-
-## Preview
-
-`npm run dev` is `serve public`. Do not replace it with a hand-rolled server.
+- Write posts and pages in `public/<slug>/index.md`. Site text is `blug.yaml` and `public/index.md`. Presentation is `templates/` and `public/assets/`.
+- Run `blug generate` and `blug serve` from this directory.
+- Never run `blug deploy` unless the user explicitly confirms it in the current conversation.
+- Leave published post markdown as written unless asked to change it.
+- Do not add a local generator or copy the upstream README or setup guide into this repo.

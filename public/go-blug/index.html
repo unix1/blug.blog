@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>blug is now written in Go - blug</title>
+  <meta name="description" content="blug is a small static blog generator. Set up and run your site on Cloudflare in minutes.">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header>
+    <a class="site-title" href="/">blug</a>
+  </header>
+  <main>
+<article>
+<h1>blug is now written in Go</h1>
+<time datetime="2026-11-08">2026-11-08</time>
+
+<p>Go <a href="https://github.com/unix1/blug">blug</a>!</p>
+<p>blug is now an executable written in Go. Install it from <a href="https://github.com/unix1/blug/releases">GitHub releases</a> or, if you use Go, with <code>go install github.com/unix1/blug@latest</code>.</p>
+<p>No more unversioned npm scripts. No more template repos.</p>
+<p>How does it work?</p>
+<h4>Commands</h4>
+<ul>
+<li><code>blug init</code> writes a starter site.</li>
+<li><code>blug generate</code> writes the HTML.</li>
+<li><code>blug serve</code> previews it locally.</li>
+<li><code>blug deploy</code> publishes <code>public/</code> to S3-compatible storage such as Cloudflare R2.</li>
+</ul>
+<p>That's it! See <a href="https://github.com/unix1/blug/blob/main/README.md">README.md</a> for more details.</p>
+<h4>What changed</h4>
+<ul>
+<li>Site settings live in <code>blug.yaml</code> instead of <code>scripts/config.js</code>.</li>
+<li>The home page intro is in <code>public/index.md</code>.</li>
+<li>Templates use Go <code>html/template</code> syntax, including the new <code>templates/article.html</code>.</li>
+</ul>
+<h3>What stayed the same</h3>
+<p>Content creation and editing remains the same. Write markdown, then use blug to generate HTML.</p>
+<ul>
+<li>Posts and pages are still <code>public/&lt;slug&gt;/index.md</code>.</li>
+<li>Static pages are still <code>type: page</code> with no date.</li>
+<li>The <code>public/</code> directory still holds all content to be deployed to the destination website.</li>
+</ul>
+<p>For more details on usage and hosting steps, see the <a href="https://github.com/unix1/blug">blug on GitHub</a>.</p>
+
+</article>
+  </main>
+  <footer>
+    <p>A site about blug, generated with blug. · © blug.blog</p>
+  </footer>
+</body>
+</html>

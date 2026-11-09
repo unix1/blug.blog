@@ -1,79 +1,23 @@
-# blug
+# blug.blog
 
-A static blog generator. Posts are markdown folders under `public/`. `scripts/generate.js` turns them into HTML.
+`blug` is a simple and small static blog and site generator.
 
-## Layout
+This repo contains content for the public [blug.blog](https://blug.blog) website. It is managed via `blug` itself.
 
-```
-.env                 # S3 credentials for rclone (not committed)
-templates/           # header.html, footer.html, listing.html
-scripts/generate.js
-scripts/config.js    # header, listing title, subtitle, description, footer, listing heading, optional home intro
-public/
-  index.html         # generated listing
-  assets/style.css
-  hello-world/
-    index.md         # you write this
-    index.html       # generated post
-    photo.jpg        # optional media
-```
+For instructions how to operate a blug site see [blug README](https://github.com/unix1/blug).
 
-## Write a post
+## Contributions
 
-Create `public/<slug>/index.md`:
+If you'd like to contribute content
 
-```markdown
----
-title: Hello World
-date: 2026-08-30
----
+0. Clone this repo.
+1. Install `blug`.
+2. Create or edit content in `public/` directory.
+3. Run `blug generate` and `blug serve` to generate and view content locally.
+4. Once satisfied with the content, create a pull request.
 
-Text. Media next to this file: [photo](./photo.jpg).
-```
-
-`title` and `date` are required. Keep media in the same directory and use relative links.
-
-## Write a page
-
-Pages use the same folder layout as posts, but with `type: page` and no date. They are not listed on the home page.
-
-Create `public/<slug>/index.md`:
-
-```markdown
----
-title: Privacy Policy
-type: page
----
-
-Your content here.
-```
-
-`title` and `type: page` are required. Link to pages the same way as posts (`/privacy-policy/`).
-
-Edit `scripts/config.js` for the site header, listing page title (`SITE_TITLE`), post/page title suffix (`SITE_SUBTITLE`), meta description (`SITE_DESCRIPTION`), footer, listing heading, and optional home-page intro (`LISTING_INTRO`, markdown shown above the post list). Posts and pages use `<title> - SITE_SUBTITLE` as the document title. Leave `LISTING_INTRO` empty to omit it.
-
-## Commands
-
-```bash
-npm install
-npm run generate   # write listing, post, and page HTML
-npm run dev        # serve public/ at http://127.0.0.1:3000
-npm run deploy     # generate, then rclone sync public/ to destination
-```
-
-## Hosting
-
-This supports S3-compatible hosting, such as Cloudflare R2. Put `S3_*` values in `.env` (see `.env.example`). `npm run deploy` passes those to rclone; no `rclone.conf` is needed. Set `CACHE_CONTROL` in `.env` to control Cache-Control on uploaded objects.
-
-R2 serves exact object keys. It does not map `/hello-world/` to `hello-world/index.html`. Add one **URL Rewrite** on the domain (Rules → Overview → URL Rewrite Rule):
-
-- If URI Path ends with `/`
-- Rewrite path dynamically to `concat(http.request.uri.path, "index.html")`
-
-That also covers `/` → `/index.html`.
-
-Post links on the listing include a trailing slash (`hello-world/`) so the browser treats the page as a directory and relative media links resolve. The rewrite is internal: the address bar stays `/hello-world/`.
+Once approved, a maintainer will run `blug deploy` to publish changes to production.
 
 ## License
 
-[MIT](LICENSE)
+[Apache License 2.0](LICENSE)

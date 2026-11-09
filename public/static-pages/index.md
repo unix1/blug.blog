@@ -3,6 +3,8 @@ title: Static pages
 date: 2026-09-26
 ---
 
+> ℹ️ See [blug repo](https://github.com/unix1/blug) for updated information. As of November 2026 `blug` is an executable (written in Go) and no longer a script executed via `npm`.
+
 [blug](https://github.com/unix1/blug) now supports static pages. Static pages are any page content that you don't want to appear in the list of posts. Examples are contents such as privacy policy, about, contact or anything you can think of.
 
 Similar to posts, create a folder under `public/` with the slug you want, and put your content in `index.md` with `type: page` instead of a date. For example, `public/privacy-policy/index.md` could be:
