@@ -17,6 +17,9 @@
 <h1>CDN cache control</h1>
 <time datetime="2026-09-07">2026-09-07</time>
 
+<blockquote>
+<p>ℹ️ See <a href="https://github.com/unix1/blug">blug repo</a> for updated information. As of November 2026 <code>blug</code> is an executable (written in Go) and no longer a script executed via <code>npm</code>.</p>
+</blockquote>
 <p><a href="https://github.com/unix1/blug">blug</a> now allows you to set how long the objects will be cached on the CDN edge. It does so by setting the <code>Cache-Control</code> header on those objects when you deploy your site. Cloudflare uses that header to control the CDN caching behavior.</p>
 <p>Without this header, R2 objects have no cache metadata, HTML would stay as a <code>DYNAMIC</code> resource and every request would go through to the R2 bucket.</p>
 <h4>Set it in <code>.env</code></h4>
